@@ -1,0 +1,27 @@
+{
+  "uuid_generator" : {
+    "name" : "uuid_generator",
+    "lambda_path" : "C:\\workplace\\data\\training\\aws_certification_training\\task07",
+    "version" : "1.0.0",
+    "func_name" : "com.task07.UuidGenerator",
+    "deployment_package" : "task07-1.0.0.jar",
+    "resource_type" : "lambda",
+    "runtime" : "java8",
+    "iam_role_name" : "uuid_generator-role",
+    "memory" : 1024,
+    "timeout" : 300,
+    "subnet_ids" : [ ],
+    "security_group_ids" : [ ],
+    "dependencies" : [ {
+      "resource_name" : "uuid_trigger",
+      "resource_type" : "cloudwatch_rule"
+    } ],
+    "event_sources" : [ {
+      "resource_type" : "cloudwatch_rule_trigger",
+      "target_rule" : "uuid_trigger"
+    } ],
+    "env_variables" : { },
+    "publish_version" : false,
+    "snap_start" : "None"
+  }
+}
