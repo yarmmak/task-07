@@ -31,6 +31,7 @@ public class UuidGenerator implements RequestHandler<Object, Void>
 	private static final int ITERATIONS = 10;
 	private static final String BUCKET_NAME = "cmtr-52e956b4-uuid-storage-test";
 	public static final String FILE_UPLOADED_MESSAGE = "List of %d UUIDs was added to file %s and uploaded into %s bucket";
+	public static final String IDS = "ids";
 
 	private AmazonS3 amazonS3;
 	private LambdaLogger logger;
@@ -41,11 +42,13 @@ public class UuidGenerator implements RequestHandler<Object, Void>
 
 		Gson gson = new Gson();
 		String fileName = getFileName();
+		Map<String, List<String>> generatedUUIDs = new HashMap<>();
 		List<String> UUIDs = Stream.generate(this::generateUUID)
 				.limit(ITERATIONS)
 				.collect(Collectors.toList());
+		generatedUUIDs.put(IDS, UUIDs);
 
-		amazonS3.putObject(BUCKET_NAME, fileName, gson.toJson(UUIDs));
+		amazonS3.putObject(BUCKET_NAME, fileName, gson.toJson(generatedUUIDs));
 		logger.log(String.format(FILE_UPLOADED_MESSAGE, ITERATIONS, fileName, BUCKET_NAME));
 
 		return null;
